@@ -1,7 +1,7 @@
 <template>
     <div class="test-container">
-        <ul class="newslist" v-infinite-scroll="loadMore()" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
-            <li v-for="new in news_list[0]">
+        <ul class="newslist" v-infinite-scroll="loadMore()" infinite-scroll-disabled="loading" infinite-scroll-distance="distance">
+            <li v-for="new in news_list">
                 <a :href="new.url"></a>
                 <img :src="new.picUrl" class="clear">
                 <h2>{{ new.title }}</h2>
@@ -9,42 +9,60 @@
                 <span>{{ new.ctime}}</span>
             </li>      
         </ul>
+        <div class="load-icon">
+                <span>正在加载</span><mt-spinner type="fading-circle" color="#26a2ff" :size="30"></mt-spinner>
+        </div>
     </div>
 </template>
 <script type="text/javascript">
     import { MessageBox } from 'mint-ui'
+    import { changeSelected } from '../vuex/action'
+
     export default{
         data(){
             let loading = false
             let news_list = []
-            return {loading, news_list}
+            let distance = 300
+            let num = 10
+            return {loading, news_list, distance, num}
         },
-        ready:function(){
+        created:function(){
             if(this.news.length == undefined){
-                // MessageBox('提示', '订单还未同步');
                 MessageBox.alert('订单未同步','提示').then(action => {
-                    window.location.href = window.location.origin + window.location.pathname + '#!/index';
+                    // window.location.href = window.location.origin + window.location.pathname + '#!/index'; //差评实现方法
+                    this.$router.go({path:'/index'})
+                    this.changeSelected('首页') //改变选中的标签栏
                 })
             }
-            else{               
-                this.news_list.push(this.news.slice(0, 10))
-                console.log(this.news_list)
+            else{
+                for(let i = 0 ; i < 10 ; i++){
+                    this.news_list.push(this.news[i])
+                }               
             }
         },
         vuex:{
             getters: {
                 news: state => state.news
+            },
+            actions: {
+                changeSelected
             }
         },
         methods:{
             loadMore: function(){
                 this.loading = true
                   setTimeout(() => {
-                    this.news_list.push(this.news.slice(10, 20));
+                    if(this.num < this.news.length){
+                        let last = this.news_list.length - 1
+                        for(let i = this.num ; i <= last + 10 ; i++){
+                            this.news_list.push(this.news[i])
+                        }
+                        this.num += 10
+                    }
                     this.loading = false;
-                  }, 2500);
+                  }, 2500)
             }
-        }
+        }           
     }
 </script>
 <style type="text/css">
@@ -89,5 +107,15 @@
         position: absolute;
         bottom: 20px;
         right: 20px;
+    }
+    .load-icon{
+        width: 100px;
+        margin: 10px auto 5px auto;
+    }
+    .load-icon span{
+        float: right;
+        line-height: 30px;
+        margin-left: 5px;
+        color: #c1c1c1;
     }
 </style>

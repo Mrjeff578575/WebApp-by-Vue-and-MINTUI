@@ -49,9 +49,9 @@
     export default{
         init:function(){
             if(window.localStorage.user == null){
-                // console.log(window.location)
-                // console.log(window.location.origin + window.location.pathname);
-                window.location.href = window.location.origin + window.location.pathname + '#!/login'
+                //window.location.href = window.location.origin + window.location.pathname + '#!/login'
+                console.log('请登录')
+                this.$router.go({path:'/login'})
             }
         },
         data(){

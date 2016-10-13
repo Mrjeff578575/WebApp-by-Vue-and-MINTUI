@@ -11,6 +11,8 @@ import order from './components/order.vue'
 import goods from './components/goods.vue'
 import personinfo from './components/personinfo.vue'
 import test from './components/test.vue'
+import push from './components/push.vue'
+''
 
 //注册VueRouter这个插件
 Vue.use(VueRouter)
@@ -23,7 +25,7 @@ const router = new VueRouter()
 
 //路由map
 router.map({
-    'login': {
+    '/login': {
         component: login
     },
     '/index': {

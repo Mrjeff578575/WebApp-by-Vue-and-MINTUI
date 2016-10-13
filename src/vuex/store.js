@@ -127,7 +127,8 @@ const state = {
     orders_untreated:[],
     goods_unstorage:[],
     currentName: 'Jeff',
-    popupVisible: false
+    popupVisible: false,
+    selected:{}
 }
 const mutations = {
     CHANGE_PERSON(state, name){
@@ -168,6 +169,9 @@ const mutations = {
     },
     DISPLAY_STATUS(state){
         state.orders_status = !orders_status
+    },
+    CHANGE_SELECTED(state, item){
+        state.selected = item
     }
 }
 export default new Vuex.Store({

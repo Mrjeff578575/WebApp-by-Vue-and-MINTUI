@@ -40,6 +40,8 @@
 </template>
 <script type="text/javascript">
     import { changePerson } from '../vuex/action'
+    import { MessageBox } from 'mint-ui'
+
     export default{
         data() {
             let username = ''
@@ -53,8 +55,10 @@
             return {username, email, password, tel, status, checked, popupVisible, show}
         },
         methods: {
+            //按钮点击的时候进行验证 =》 提交 =》 存本地 =》 本地提取 =》 完成登录
             Jump: function(show) {
-                if(this.password !== ''){
+                //当前状态再次点击 则表示用户想提交表单
+                if(this.show == show){
                     this.Check()
                 }
                 else{
@@ -64,7 +68,8 @@
             change: function(show) {
                 this.show = show
             },
-            Check: function() {
+            //前端表单基础验证
+            Check: function() {  
                 const email_filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/
                 const tel_filter = /^1[34578]{1}\d{9}$/
                 this.username.length >= 2 ? this.status.user = 'success' : this.status.user = 'error'
@@ -73,9 +78,11 @@
                 tel_filter.test(this.tel) ? this.status.tel = 'success' : this.status.tel = 'error'
                 this.Submit()
             },
-            Submit: function() {
+            //表单提交
+            Submit: function() {  
                 let j = 0
                 for(let i in this.status){
+                    //所有数据通过验证，则提交表单
                     if(this.status[i] == 'success'){
                         j++
                     }
@@ -88,16 +95,21 @@
                         document.getElementById("register_form").submit()
                     }                    
                     let user = {'username':this.username, 'email':this.email, 'password':this.password, 'tel':this.tel}
-                    window.localStorage.user = JSON.stringify(user)
+                    window.localStorage.user = JSON.stringify(user) //将用户数据存储在本地
                     // {'username':this.user, 'email':this.email, 'password':this.password, 'tel':this.tel}
                     window.location.href = window.location.origin + window.location.pathname + '#!/index'
+                    // this.$router.go({path:'/index'})未知原因出现错误 路由跳转失败 暂时改为老方法
                     this.changePerson(this.username)
+                }
+                else{
+                    console.log('请输入正确的用户名和密码')
+                    MessageBox('提示', '请输入正确的用户名和密码');
                 }
             }
         },
         ready:function(){
             if(window.localStorage.user !== undefined){
-                let localuser =  JSON.parse(window.localStorage.user)
+                let localuser =  JSON.parse(window.localStorage.user) //如果本地数据存在，则默认填入本地数据 
                 this.username = localuser.username
                 this.email = localuser.email
                 this.password = localuser.password

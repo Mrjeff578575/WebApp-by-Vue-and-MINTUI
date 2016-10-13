@@ -1,6 +1,6 @@
 <template>
     <div class="order-container">
-        <mt-navbar class="page-part" :selected.sync="selected">
+        <mt-navbar class="page-part" :selected.sync="selected" fixed>
           <mt-tab-item id="all"  @click="changeDisplay">全部</mt-tab-item>
           <mt-tab-item id="untreated" @click="changeDisplay">未入库</mt-tab-item>
         </mt-navbar>

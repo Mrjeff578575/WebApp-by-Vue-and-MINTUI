@@ -40,22 +40,37 @@
             <i class="iconfont tabs-icon" slot="icon">&#xe677;</i>
             我
         </mt-tab-item>
-        <mt-tab-item id="测试" v-link="'/test'">
+        <mt-tab-item id="测试" v-link="'/test'" @click="changeSelected('测试')">
             <i class="iconfont tabs-icon" slot="icon">&#xe677;</i>
             测试页面
         </mt-tab-item>
     </mt-tabbar>
-    <router-view transition="fade"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 <script type="text/javascript">
     import store from './vuex/store'
+    import { changeSelected } from './vuex/action'
+
     export default{
         store,
         data(){
             let selected = '首页'
             let sideVisible = false
             return { selected, sideVisible }
+        },
+        vuex:{
+            getters:{
+                select: state => state.selected
+            },
+            actions:{
+                changeSelected
+            }
+        },
+        watch:{
+            'select': function (val, oldVal) {
+                this.selected = val
+            }
         }
     }
 </script>
@@ -78,15 +93,6 @@
         border: 1px solid #efefef;
         outline: none;
         width: 100%;
-    }
-    .fade-transition {
-        transition: all 0.2s ease;
-    }
-    .fade-enter{
-        transform: translateX(500px);
-    }
-    .fade-leave{
-        opacity: 0;
     }
     .tabs-icon{
         color: #999898;

@@ -1,6 +1,6 @@
 <template>
     <div class="order-container">
-        <mt-navbar class="page-part" :selected.sync="selected">
+        <mt-navbar class="page-part" :selected.sync="selected" fixed>
           <mt-tab-item id="all"  @click="changeDisplay">全部</mt-tab-item>
           <mt-tab-item id="untreated" @click="changeDisplay">待处理</mt-tab-item>
         </mt-navbar>
@@ -59,7 +59,9 @@
         z-index: 99;
     }
     .order-list{
-        height: 75%;
+        position: relative;
+        top: 49px;
+        height: calc(100% - 144px);
         overflow: scroll;
     }
     .order-item img{
@@ -81,6 +83,9 @@
         bottom: 10%;
         color: #c1c1c1;
         left: 110px;
+    }
+    .mint-navbar.is-fixed{
+        top: 40px;
     }
     .mint-navbar .mint-tab-item.is-selected{
         margin-bottom: 0;

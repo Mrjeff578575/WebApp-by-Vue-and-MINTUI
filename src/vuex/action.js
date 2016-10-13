@@ -19,15 +19,16 @@ export const displayStatus = ({dispatch}) => { //显示订单的同步成功和�
 }
 
 export const changeSelected = ({dispatch}, item) => {
-    dispatch('CHANGE_SELECTED')
+    dispatch('CHANGE_SELECTED', item)
 }
+
 export const synchroOrder = ({dispatch}, that) => {
     const url = 'http://apis.baidu.com/txapi/weixin/wxhot?num=10&rand=1&word=%E7%9B%97%E5%A2%93%E7%AC%94%E8%AE%B0&page=1&src=%E4%BA%BA%E6%B0%91%E6%97%A5%E6%8A%A5'
     const options = {
         'url': url,
         'method':'GET',
         'params':{
-            'num': 20,
+            'num': 50,
             'rand': 1,
             'word': '大疆',
             'src' : '人民日报'
